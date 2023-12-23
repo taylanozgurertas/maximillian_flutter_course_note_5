@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 //! INTRODUCTION TO STATEFUL WIDGET.
 
@@ -41,6 +42,8 @@ yalnızca ilgili widget'ların güncellenmesini sağlamak mümkündür.
 
  */
 
+final randomizer = Random();
+
 class DiceRoller extends StatefulWidget {
   const DiceRoller({super.key});
 
@@ -51,11 +54,24 @@ class DiceRoller extends StatefulWidget {
 }
 
 class _DiceRollerState extends State<DiceRoller> {
-  String activeDiceImage = "assets/dice-2.png";
+  var currentDiceRoll = 2;
 
   void rollDice() {
+    //Random sınıfını kullanarak nextInt metoduyla 6 verdiysen misal 0-5 arası sayı üretir o yüzden 1 ekliyoruz
     setState(() {
-      activeDiceImage = "assets/dice-4.png";
+      //setState otomatik bakıyor currentDiceRoll un kullanıldığı widget treeyi güncelliyor
+      //currentDiceRoll = Random().nextInt(6) + 1;
+      currentDiceRoll = randomizer.nextInt(6) + 1;
+      /*
+      currentDiceRoll = Random().nextInt(6) + 1;
+      burada teknik bir sıkıntı var her seferinde butona tıklandığında currentDiceRoll yeni bir sayı üretilecek Random() objesi
+      üretilecek ve hafızada yer tutacak. tekrar tıklandığında eski object silinip atılıyor çok şükür ama atılsa bile gereksiz object oluşturma yapmış oluyoruz
+      bundan kaçınmamız gerekir tabi bu basit bir zar atma appi olduğu için takmaya gerek yok ama yine de bunu çözmek için 
+      şöyle yapmamız lazım: 
+
+      Random objesini en üstte tanımlayıp hatta tanımlayayım gidip
+      final randomizer = Random(); diye tanımlayıp
+       */
     });
   }
 
@@ -66,7 +82,7 @@ class _DiceRollerState extends State<DiceRoller> {
       // eger bir seyler vermezsek default olarak bulunan bütün dikey alana yayılır.
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(activeDiceImage, width: 200),
+        Image.asset('assets/dice-$currentDiceRoll.png', width: 200),
         // ElevatedButton(onPressed: onPressed, child: child) //arkaplan rengi ve gölgesi olan buton
         // OutlinedButton(onPressed: onPressed, child: child) //arkaplan rengi yok çerçeve gibi buton
 
